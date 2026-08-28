@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Trabajos — Leonardo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mis-trabajos.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div>
+      <div class="eyebrow">Biblioteca personal</div>
+      <h1>Mis <em>trabajos</em></h1>
+    </div>
+    <div class="byline"><b>Leonardo</b><br>Cusco, Perú</div>
+  </div>
+
+  <p class="sub">Libros, apuntes, tareas y trabajos en un solo sitio. Cualquiera con este link puede buscar, subir y descargar.</p>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar libros, apuntes, tareas, trabajos...">
+    </div>
+    <button class="upload-btn" id="uploadBtn">↑ Subir archivo</button>
+    <input type="file" id="fileInput">
+  </div>
+
+  <div class="upload-panel" id="uploadPanel">
+    <span class="fname" id="fname"></span>
+    <select id="catSelect">
+      <option value="libros">📚 Libros</option>
+      <option value="apuntes">📝 Apuntes</option>
+      <option value="tareas">📋 Tareas</option>
+      <option value="trabajos">💼 Trabajos</option>
+    </select>
+    <button class="confirm" id="confirmUpload">Subir</button>
+    <button class="cancel" id="cancelUpload">Cancelar</button>
+  </div>
+  <div class="upload-hint">⚠ Se guarda para todos los que abran este link. Mejor con archivos chicos (&lt;4.5&nbsp;MB).</div>
+
+  <div class="shelf" id="shelf"></div>
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title" id="panelTitle"></div>
+      <div class="panel-count" id="panelCount"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <footer>hecho a mano por Leonardo</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="mis-trabajos.js"></script>
+</body>
+</html>

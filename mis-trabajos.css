@@ -1,0 +1,360 @@
+/* ============================================================
+   PARA AGREGAR ARCHIVOS DESDE EL CODIGO: bajá hasta "DATOS" en
+   el <script> (buscá SECCIONES). Cada item lleva:
+   { nombre, desc, fecha, tamano, url ó data }
+   Los archivos que la gente sube desde la página (botón Subir)
+   se guardan aparte, en almacenamiento COMPARTIDO: cualquiera
+   que abra este link los ve y los puede subir/bajar/borrar.
+   ============================================================ */
+
+:root{
+  --cream:#F6F1E3;
+  --cream-2:#EDE5D0;
+  --cream-3:#E2D8BC;
+  --ink:#2B2A22;
+  --green-deep:#233829;
+  --green:#3C6349;
+  --green-mid:#5C8567;
+  --green-light:#9CB89E;
+  --muted:#8C8570;
+  --card:#FFFDF7;
+  --amber:#C98A3E;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Inter', sans-serif;
+  min-height:100vh;
+}
+.wrap{max-width:880px;margin:0 auto;padding:48px 22px 90px;}
+
+/* ---- header ---- */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:6px;flex-wrap:wrap;}
+.eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--green);
+  margin-bottom:10px;
+}
+h1{
+  font-family:'Fraunces', serif;
+  font-weight:700;
+  font-size:clamp(36px,6.4vw,58px);
+  line-height:.96;
+  margin:0;
+  color:var(--green-deep);
+}
+h1 em{font-style:italic;font-weight:600;color:var(--green-mid);}
+.byline{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  color:var(--muted);
+  text-align:right;
+  line-height:1.6;
+}
+.byline b{color:var(--green-deep);}
+
+.sub{
+  color:var(--muted);
+  font-size:14.5px;
+  max-width:56ch;
+  margin:16px 0 28px;
+  line-height:1.6;
+}
+
+/* ---- barra de búsqueda + subir ---- */
+.toolbar{
+  display:flex;
+  gap:10px;
+  margin-bottom:22px;
+  flex-wrap:wrap;
+}
+.search-box{
+  flex:1;
+  min-width:200px;
+  position:relative;
+}
+.search-box input{
+  width:100%;
+  background:var(--card);
+  border:1.5px solid var(--cream-3);
+  border-radius:8px;
+  padding:12px 14px 12px 38px;
+  font-family:'Inter', sans-serif;
+  font-size:14px;
+  color:var(--ink);
+  outline:none;
+  transition:.15s border-color;
+}
+.search-box input:focus{border-color:var(--green-mid);}
+.search-box::before{
+  content:"🔍";
+  position:absolute;
+  left:13px;top:50%;
+  transform:translateY(-50%);
+  font-size:13px;
+  opacity:.55;
+}
+.upload-btn{
+  background:var(--green-deep);
+  color:var(--cream);
+  border:none;
+  border-radius:8px;
+  padding:0 20px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:.15s background;
+}
+.upload-btn:hover{background:var(--green);}
+#fileInput{display:none;}
+
+/* ---- panel de subida (aparece al elegir archivo) ---- */
+.upload-panel{
+  display:none;
+  background:var(--cream-2);
+  border:1.5px dashed var(--green-mid);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:22px;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.upload-panel.show{display:flex;}
+.upload-panel .fname{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  flex:1;
+  min-width:140px;
+}
+.upload-panel select{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px;
+  padding:8px 10px;
+  border-radius:6px;
+  border:1px solid var(--cream-3);
+  background:var(--card);
+  color:var(--ink);
+}
+.upload-panel .confirm{
+  background:var(--green-mid);
+  color:var(--cream);
+  border:none;
+  padding:8px 16px;
+  border-radius:6px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11.5px;
+  font-weight:600;
+  cursor:pointer;
+  text-transform:uppercase;
+}
+.upload-panel .cancel{
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--cream-3);
+  padding:8px 14px;
+  border-radius:6px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11.5px;
+  cursor:pointer;
+}
+.upload-hint{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;
+  color:var(--muted);
+  margin:-14px 0 24px;
+}
+
+/* ---- estante de secciones (tabs tipo lomo de libro) ---- */
+.shelf{
+  display:flex;
+  gap:6px;
+  border-bottom:3px solid var(--green-deep);
+  padding-bottom:0;
+  transition:.15s opacity;
+}
+.shelf.dimmed{opacity:.4;pointer-events:none;}
+.tab{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  font-size:14.5px;
+  padding:14px 20px 12px;
+  border:none;
+  border-radius:8px 8px 0 0;
+  cursor:pointer;
+  color:var(--cream);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transform:translateY(3px);
+  transition:.15s transform, .15s opacity;
+  opacity:.72;
+}
+.tab:hover{opacity:.9;}
+.tab.active{
+  transform:translateY(0);
+  opacity:1;
+}
+.tab .n{
+  font-family:'JetBrains Mono', monospace;
+  font-size:10.5px;
+  background:rgba(255,255,255,.22);
+  padding:1px 6px;
+  border-radius:20px;
+}
+.tab[data-cat="libros"]{background:#2F4D38;}
+.tab[data-cat="apuntes"]{background:#3C6349;}
+.tab[data-cat="tareas"]{background:#547B5A;}
+.tab[data-cat="trabajos"]{background:#6B9070;}
+
+/* ---- panel de contenido ---- */
+.panel{
+  background:var(--green-deep);
+  border-radius:0 12px 12px 12px;
+  padding:26px;
+  min-height:220px;
+}
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:18px;
+}
+.panel-title{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  color:var(--cream);
+  font-size:19px;
+}
+.panel-count{
+  font-family:'JetBrains Mono', monospace;
+  color:var(--green-light);
+  font-size:11.5px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:10px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  box-shadow:0 3px 0 rgba(0,0,0,.12);
+  transition:.15s transform;
+  position:relative;
+}
+.card:hover{transform:translateY(-2px);}
+.card-icon{font-size:20px;}
+.card-tag{
+  position:absolute;
+  top:12px;right:12px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:9.5px;
+  color:var(--green-mid);
+  background:var(--cream-2);
+  padding:2px 7px;
+  border-radius:20px;
+}
+.card-name{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  font-size:15px;
+  color:var(--green-deep);
+  line-height:1.3;
+  padding-right:10px;
+}
+.card-desc{
+  font-size:12.5px;
+  color:var(--muted);
+  line-height:1.5;
+  flex:1;
+}
+.card-meta{
+  font-family:'JetBrains Mono', monospace;
+  font-size:10.5px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+}
+.card-actions{display:flex;gap:6px;margin-top:4px;}
+.card-dl{
+  flex:1;
+  background:var(--green-mid);
+  color:var(--cream);
+  text-decoration:none;
+  text-align:center;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  padding:9px 0;
+  border-radius:6px;
+  transition:.15s background;
+  border:none;
+  cursor:pointer;
+}
+.card-dl:hover{background:var(--green);}
+.card-del{
+  flex:0 0 34px;
+  background:transparent;
+  border:1px solid #c26a5f;
+  color:#c26a5f;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.empty{
+  color:var(--green-light);
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  text-align:center;
+  padding:40px 0;
+  border:1.5px dashed rgba(156,184,158,.35);
+  border-radius:10px;
+}
+
+.toast{
+  position:fixed;
+  bottom:20px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--green-deep);
+  color:var(--cream);
+  border:1px solid var(--green-mid);
+  padding:10px 18px;
+  border-radius:8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  opacity:0;
+  transition:.25s;
+  pointer-events:none;
+  z-index:10;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+footer{
+  text-align:center;
+  margin-top:50px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;
+  color:var(--muted);
+  opacity:.7;
+}
