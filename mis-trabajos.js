@@ -29,6 +29,7 @@ const SECCIONES = {
 /* ===================================================================== */
 
 const STORE_KEY = 'mis-trabajos-uploads';
+const THEME_KEY = 'mis-trabajos-theme';
 let uploads = { libros:[], apuntes:[], tareas:[], trabajos:[] };
 let activeCat = Object.keys(SECCIONES)[0];
 let pendingFiles = [];
@@ -44,6 +45,34 @@ const uploadPanel = document.getElementById('uploadPanel');
 const fnameEl = document.getElementById('fname');
 const catSelect = document.getElementById('catSelect');
 const toastEl = document.getElementById('toast');
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+
+/* ---- tema claro / oscuro ---- */
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+  themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+  themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+}
+
+function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem(THEME_KEY); }catch(e){ /* sin acceso a localStorage */ }
+  // Por defecto siempre arranca en modo claro, salvo que el usuario ya haya elegido oscuro antes.
+  applyTheme(saved === 'dark' ? 'dark' : 'light');
+}
+
+themeToggle.addEventListener('click', ()=>{
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  themeIcon.classList.add('spin');
+  applyTheme(next);
+  try{ localStorage.setItem(THEME_KEY, next); }catch(e){ /* sin acceso a localStorage */ }
+  setTimeout(()=>themeIcon.classList.remove('spin'), 500);
+});
+
+initTheme();
 
 function showToast(msg){
   toastEl.textContent = msg;
@@ -136,7 +165,9 @@ function renderTabs(){
     const total = sec.items.length + uploads[key].length;
     const btn = document.createElement('button');
     btn.className = 'tab' + (key===activeCat ? ' active' : '');
+    btn.type = 'button';
     btn.dataset.cat = key;
+    btn.setAttribute('aria-selected', key===activeCat ? 'true' : 'false');
     btn.innerHTML = `${sec.icon} ${sec.label} <span class="n">${total}</span>`;
     btn.addEventListener('click', ()=>{
       activeCat = key;
@@ -151,7 +182,7 @@ function cardHtml(item){
   const href = item.url || item.data || '#';
   const secInfo = SECCIONES[item.cat];
   return `<div class="card">
-    ${item.fixed ? '' : `<button class="card-del" data-id="${item.id}" data-cat="${item.cat}" title="Eliminar">✕</button>`}
+    ${item.fixed ? '' : `<button class="card-del" data-id="${item.id}" data-cat="${item.cat}" title="Eliminar" aria-label="Eliminar ${escapeHtml(item.nombre)}">✕</button>`}
     <span class="card-tag">${secInfo.icon} ${secInfo.label}</span>
     <div class="card-icon">${item.fixed ? secInfo.icon : iconForType(item.type)}</div>
     <div class="card-name">${escapeHtml(item.nombre)}</div>
@@ -166,7 +197,6 @@ function cardHtml(item){
 function renderGrid(){
   const query = searchInput.value.trim().toLowerCase();
   if(query){
-    shelf.classList.add('dimmed');
     let results = [];
     Object.keys(SECCIONES).forEach(cat=>{
       allItemsFor(cat).forEach(item=>{
@@ -180,7 +210,6 @@ function renderGrid(){
       ? results.map(cardHtml).join('')
       : `<div class="empty" style="grid-column:1/-1;">No encontré nada con eso. Prueba otra palabra.</div>`;
   }else{
-    shelf.classList.remove('dimmed');
     const sec = SECCIONES[activeCat];
     const items = allItemsFor(activeCat);
     panelTitle.textContent = sec.label;

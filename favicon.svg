@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- fondo blanco -->
+  <circle cx="32" cy="32" r="32" fill="#ffffff"/>
+
+  <clipPath id="round">
+    <circle cx="32" cy="32" r="32"/>
+  </clipPath>
+
+  <g fill="#141414" clip-path="url(#round)">
+    <!-- cola, curva limpia hacia un costado, debajo de la oreja -->
+    <path d="M43 49c1-8 6-14.5 13.5-16 2.4-0.5 4.6-0.3 6.5 0.5 -0.4 3-2 5.7-4.6 7.7 2 0 3.9-0.5 5.6-1.6 0.2 3.6-1.5 7.4-4.8 9.8 -4.3 3.2-9.8 3.3-13.6 0.6 -1 0.2-1.9 0.1-2.6-1z"/>
+
+    <!-- cuerpo, forma de domo sentado -->
+    <path d="M10 60a22 22 0 0 1 44 0z"/>
+
+    <!-- orejas -->
+    <path d="M20 26 L13 8 L28.5 19.5 Z"/>
+    <path d="M44 26 L51 8 L35.5 19.5 Z"/>
+    <path d="M20.6 22.7 L15.8 10.6 L26 18.4 Z" fill="#ffffff"/>
+    <path d="M43.4 22.7 L48.2 10.6 L38 18.4 Z" fill="#ffffff"/>
+
+    <!-- cabeza -->
+    <path d="M32 17c8.6 0 14.3 6.2 14.3 14.3 0 7.7-5.8 14.3-14.3 17.1 -8.6-2.8-14.3-9.4-14.3-17.1 0-8.1 5.7-14.3 14.3-14.3z"/>
+
+    <!-- hocico, recorte blanco -->
+    <path d="M32 33c-4.7 0-7.9 2-7.9 5.1 0 3.6 3.6 7.9 7.9 9.1 4.3-1.2 7.9-5.5 7.9-9.1 0-3.1-3.2-5.1-7.9-5.1z" fill="#ffffff"/>
+
+    <!-- ojos, recorte blanco -->
+    <path d="M21.3 29.3c2.3-2.5 6-2.8 8.5-0.6 -2 0.5-4.9 1.2-8.5 0.6z" fill="#ffffff"/>
+    <path d="M42.7 29.3c-2.3-2.5-6-2.8-8.5-0.6 2 0.5 4.9 1.2 8.5 0.6z" fill="#ffffff"/>
+  </g>
+</svg>

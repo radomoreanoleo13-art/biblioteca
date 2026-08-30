@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mis trabajos — Leonardo</title>
+<title>Mis trabajos — Leonardo</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -11,20 +12,35 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="top">
-    <div>
+  <header class="top">
+    <div class="top-left">
       <div class="eyebrow">Biblioteca personal</div>
-      <h1>Fanco<em>me a pela</em></h1>
+      <h1>Mis <em>trabajos</em></h1>
     </div>
-    <div class="byline"><b>tu poto</b><br>Cusco, Perú</div>
-  </div>
-  <p class="sub">Libros, apuntes, tareas y trabajos en un solo sitio. Cualquiera con este link puede buscar, subir y descargar.</p>
+    <div class="top-right">
+      <div class="byline"><b>Leonardo</b><br>Cusco, Perú</div>
+      <button class="theme-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Cambiar a modo oscuro">
+        <span class="theme-compact">
+          <span class="theme-icon" id="themeIcon">☀️</span>
+        </span>
+        <span class="theme-expanded">
+          <span class="theme-word word-light">Claro</span>
+          <span class="theme-track"><span class="theme-thumb"></span></span>
+          <span class="theme-word word-dark">Oscuro</span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <p class="sub">Gentita linda,cree esta biblioteca con el fin de compartir libros,apuntes,tareas y trabajos sin ningun costo lo unico que les pido es que puedan subir sus archivos a la pagina para que cadavez sea mas grande.</p>
 
   <div class="toolbar">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Buscar libros, apuntes, tareas, trabajos...">
     </div>
-    <button class="upload-btn" id="uploadBtn">↑ Subir archivo</button>
+    <button class="upload-btn" id="uploadBtn" type="button">
+      <span class="upload-icon" aria-hidden="true">⬆</span> Subir archivo
+    </button>
     <input type="file" id="fileInput" multiple>
   </div>
 
@@ -36,25 +52,25 @@
       <option value="tareas">📋 Tareas</option>
       <option value="trabajos">💼 Trabajos</option>
     </select>
-    <button class="confirm" id="confirmUpload">Subir</button>
-    <button class="cancel" id="cancelUpload">Cancelar</button>
+    <button class="confirm" id="confirmUpload" type="button">Subir</button>
+    <button class="cancel" id="cancelUpload" type="button">Cancelar</button>
   </div>
   <div class="upload-hint">⚠ Se guarda para todos los que abran este link. Mejor con archivos chicos (&lt;4.5&nbsp;MB).</div>
 
-  <div class="shelf" id="shelf"></div>
+  <nav class="shelf" id="shelf" aria-label="Categorías"></nav>
 
-  <div class="panel">
+  <section class="panel">
     <div class="panel-head">
       <div class="panel-title" id="panelTitle"></div>
       <div class="panel-count" id="panelCount"></div>
     </div>
     <div class="grid" id="grid"></div>
-  </div>
+  </section>
 
   <footer>hecho a mano por Leonardo</footer>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="mis-trabajos.js"></script>
